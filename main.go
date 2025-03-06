@@ -11,16 +11,13 @@ import (
 )
 
 func main() {
-	// Load environment variables from .env file
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
+	// Load .env file if it exists (but do not fail if it's missing)
+	_ = godotenv.Load()
 
 	// Get the PostgreSQL connection URL from environment variables
 	dbURL := os.Getenv("POSTGRES_URL")
 	if dbURL == "" {
-		log.Fatalf("POSTGRES_URL not set in .env file")
+		log.Fatal("POSTGRES_URL is not set in the environment")
 	}
 
 	// Connect to the database
