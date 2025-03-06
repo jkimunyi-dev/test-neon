@@ -1,0 +1,59 @@
+# Binary files
+*.exe
+*.out
+*.o
+*.so
+*.a
+*.dll
+
+# Go build and cache directories
+/bin/
+/pkg/
+/build/
+*.test
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs and temporary files
+*.log
+*.tmp
+*.lock
+*.bak
+*.swp
+nohup.out
+
+# Dependency management
+/vendor/
+
+# IDE/editor specific files
+.idea/
+.vscode/
+*.iml
+
+# Environment and secrets
+.env
+.env.*
+config.yaml
+*.crt
+*.key
+*.pem
+
+# Go modules cache (optional)
+go.sum
+
+# Coverage reports
+*.cover
+cover.out
+
+# Debugging tools
+trace.out
+pprof/
+
+# Docker-specific ignores (if using Docker)
+docker-compose.override.yml
+docker-compose.yml
+.dockerignore
