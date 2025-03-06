@@ -1,36 +1,30 @@
-name: Deploy Go App to EC2
+name: Go App CI/CD
 
 on:
   push:
     branches:
-      - main  # Adjust the branch as needed
+      - master  # Adjust if using a different branch
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.21  # Adjust to your Go version
+          go-version: '1.22'
 
-      - name: Build Go application
-        run: |
-          go mod tidy
-          go build -o app main.go
+      - name: Install Dependencies
+        run: go mod tidy
 
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            cd ~/go/src/test-neon
-            git pull origin main
-            go build -o app main.go
-            sudo systemctl restart my-go-service  # Adjust your service name
+      - name: Run Database Migrations
+        env:
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}  # Load from GitHub Secrets
+        run: go run main.go
