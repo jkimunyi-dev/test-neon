@@ -7,17 +7,13 @@ import (
 	"os"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	// Load .env file if it exists (but do not fail if it's missing)
-	_ = godotenv.Load()
-
 	// Get the PostgreSQL connection URL from environment variables
 	dbURL := os.Getenv("POSTGRES_URL")
 	if dbURL == "" {
-		log.Fatal("POSTGRES_URL is not set in the environment")
+		log.Fatal("Error: POSTGRES_URL environment variable is not set")
 	}
 
 	// Connect to the database
