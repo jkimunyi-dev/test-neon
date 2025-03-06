@@ -42,8 +42,8 @@ config.yaml
 *.key
 *.pem
 
-# Go modules cache (optional)
-go.sum
+# Go modules cache (Keep `go.sum` for dependency resolution)
+go.mod
 
 # Coverage reports
 *.cover
