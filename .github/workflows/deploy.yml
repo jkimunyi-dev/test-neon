@@ -1,9 +1,9 @@
-name: Go App CI/CD
+name: CI
 
 on:
   push:
     branches:
-      - master  # Adjust if using a different branch
+      - master
   pull_request:
     branches:
       - master
@@ -13,18 +13,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Go
+      - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: 1.22  # Adjust if needed
+          cache: true  # Enables caching
 
-      - name: Install Dependencies
-        run: go mod tidy
+      - name: Verify go.mod and go.sum
+        run: |
+          if [ ! -f "go.mod" ]; then
+            echo "go.mod not found, initializing module"
+            go mod init test-neon
+          fi
+          if [ ! -f "go.sum" ]; then
+            echo "go.sum not found, downloading dependencies"
+            go mod tidy
+          fi
 
-      - name: Run Database Migrations
-        env:
-          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}  # Load from GitHub Secrets
-        run: go run main.go
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Run tests
+        run: go test -v ./...
